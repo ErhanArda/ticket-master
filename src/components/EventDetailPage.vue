@@ -10,7 +10,7 @@
           <th scope="col">#</th>
           <th scope="col">Names</th>
           <th scope="col">Status</th>
-          <th scope="col">İnfo</th>
+          <th scope="col">Info</th>
           <th scope="col">Price</th>
           <th scope="col">İmages</th>
         </tr>

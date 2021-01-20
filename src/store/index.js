@@ -6,8 +6,9 @@ export default createStore({
     baseUrl: "https://app.ticketmaster.com/discovery/v2/",
     eventList: [],
     eventDetails: {},
-    page: 1,
-    total: 1
+    page: 0,
+    total: 1,
+    keyword:""
   },
   mutations: {
     setEventList(state, pEventList) {
@@ -15,6 +16,12 @@ export default createStore({
     },
     setEventDetails(state, pEventDetails) {
       state.eventDetails = pEventDetails
+    },
+    setKeyword(state,pKeyword){
+      state.keyword = pKeyword
+    },
+    setPage(state,pPage){
+      state.page = pPage
     }
   },
   getters: {
@@ -22,6 +29,9 @@ export default createStore({
     getEventDetails(state) {
       return state.eventDetails;
     },
+    getKeyword: state => state.keyword,
+    getPage: state => state.page,
+
   },
   actions: {
     fetchEventList({ commit, state }, payload) {
@@ -30,6 +40,33 @@ export default createStore({
         .then(response => {
           console.log('response.data!', response)
           commit("setEventList", response.data._embedded.events)
+          commit("setKeyword", payload)
+        }).catch(error => {
+          console.log('error', error)
+          alert("not found")
+        })
+    },
+    prevEventList({ commit, state }, payload) {
+      console.log('payload', payload)
+      axios.get(`${state.baseUrl}events?apikey=c5E0azLbRMKOHm9fZpuBftGzEOIV2H9K&page=${payload}&keyword=${state.keyword}`)
+        .then(response => {
+          console.log('response.data!', response)
+          commit("setEventList", response.data._embedded.events)
+          commit("setPage", response.data.page)
+
+        }).catch(error => {
+          console.log('error', error)
+          alert("not found")
+        })
+    },
+    nextEventList({ commit, state }, payload) {
+      console.log('payload', payload)
+      axios.get(`${state.baseUrl}events?apikey=c5E0azLbRMKOHm9fZpuBftGzEOIV2H9K&page=${payload}&keyword=${state.keyword}`)
+        .then(response => {
+          console.log('response.data!', response)
+          commit("setEventList", response.data._embedded.events)
+          commit("setPage", response.data.page)
+
         }).catch(error => {
           console.log('error', error)
           alert("not found")

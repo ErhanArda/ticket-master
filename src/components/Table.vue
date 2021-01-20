@@ -1,7 +1,12 @@
 <template>
   <div class="container">
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-primary sm mr-auto" @click="prev">Prev</button>
+      <p class="mx-auto">{{ getPage.number }}</p>
+      <button class="btn btn-primary sm" @click="next">Next</button>
+    </div>
     <table class="table">
-      <thead> 
+      <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
@@ -35,6 +40,7 @@ export default {
   data() {
     return {
       Lists: [],
+      count: 1,
     };
   },
   methods: {
@@ -43,14 +49,19 @@ export default {
       this.$store.dispatch("loadEventDetails", selectEventId);
       // this.$store.commit("setEventList", this.Lists);
     },
+    prev() {
+      let nextPage = (this.count -= 1);
+      this.$store.dispatch("nextEventList", nextPage);
+    },
+    next() {
+      let nextPage = (this.count += 1);
+      this.$store.dispatch("nextEventList", nextPage);
+    },
   },
-  computed:{
-        ...mapGetters(["getEventList","getEventDetails"]),
+  computed: {
+    ...mapGetters(["getEventList", "getEventDetails", "getPage"]),
   },
   watch: {
-    // page() {
-    //   this.$store.dispatch("fetchEventList");
-    // },
     async getEventDetails() {
       Object.keys(this.getEventDetails).length > 0
         ? this.$router.push({

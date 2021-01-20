@@ -9,9 +9,8 @@
         aria-label="Search"
         v-model="searchText"
       />
-
     </nav>
-    <Table />
+    <Table :searchText="searchText" />
   </div>
 </template>
 
@@ -32,26 +31,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getEventList"]),
-    // page: {
-    //   get() {
-    //     return this.$store.getters.getPage;
-    //   },
-    //   set(value) {
-    //     return this.$store.commit("setPage", value);
-    //   },
-    // },
+    ...mapGetters(["getEventList"])
   },
   methods: {
     eventDetails(selectEventId) {
       console.log("id", selectEventId);
       this.$store.dispatch("loadEventDetails", selectEventId);
     },
+    next() {},
   },
   watch: {
-    // page() {
-    //   this.$store.dispatch("fetchEventList");
-    // },
     searchText: debounce(function(newVal) {
       if (newVal) {
         this.$store.dispatch("fetchEventList", newVal);
