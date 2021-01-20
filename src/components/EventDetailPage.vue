@@ -20,9 +20,15 @@
           <th scope="row">1</th>
           <td>{{ getEventDetails.name }}</td>
           <td>{{ getEventDetails.dates.status.code }}</td>
-          <td>{{ getEventDetails.info || "NO INFO"}}</td>
-          <td>{{ `${getEventDetails.priceRanges[0].min}-${getEventDetails.priceRanges[0].max} ${getEventDetails.priceRanges[0].currency}` }}</td>
-          <td><img :src="getEventDetails.images[0].url" class="img-thumbnail" alt="..."></td>
+          <td>{{ getEventDetails.info || "NO INFO" }}</td>
+          <td>{{ priceRange || "NO INFO" }}</td>
+          <td>
+            <img
+              :src="getEventDetails.images[0].url"
+              class="img-thumbnail"
+              alt="..."
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +41,14 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["getEventDetails"]),
+    priceRange() {
+      if (this.getEventDetails.priceRanges == undefined) {
+        return "NO INFO";
+      } else {
+        let range = `${this.getEventDetails.priceRanges[0].min} - ${this.getEventDetails.priceRanges[0].max} ${this.getEventDetails?.priceRanges[0].currency}`;
+        return range;
+      }
+    },
   },
   methods: {
     home() {
@@ -45,7 +59,7 @@ export default {
 </script>
 
 <style scoped>
-.img-thumbnail{
+.img-thumbnail {
   width: 10vw;
 }
 </style>
